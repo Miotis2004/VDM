@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "./App.css";
+import CharacterSheetViewer from "./components/CharacterSheet/CharacterSheetViewer";
+import CharacterSheetEditor from "./components/CharacterSheet/CharacterSheetEditor";
 
 function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
+
 
   const sendPrompt = () => {
     if (!input.trim()) return;
@@ -67,31 +70,84 @@ function App() {
     if (e.key === "Enter") sendPrompt();
   };
 
-  return (
-    <div className="App">
-      <h2>Virtual Dungeon Master</h2>
-      <textarea
-        rows={3}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Describe the lair of the red dragon..."
-      />
-      <button onClick={sendPrompt}>Send</button>
+  const defaultCharacter = {
+    name: "",
+    race: "",
+    class: "",
+    level: 1,
+    stats: {
+      strength: 10,
+      dexterity: 10,
+      constitution: 10,
+      intelligence: 10,
+      wisdom: 10,
+      charisma: 10,
+    },
+    equipment: [],
+    background: "",
+  };
 
-      <div className="messages">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`message ${msg.from === "user" ? "user" : "dm"}`}
+  const [character, setCharacter] = useState(defaultCharacter);
+  const [activeTab, setActiveTab] = useState("view");
+  const [formData, setFormData] = useState(character || defaultCharacter);
+
+  return (
+    <div className="main-container">
+      <div className="chat-panel">
+        <h2>Virtual Dungeon Master</h2>
+        <textarea
+          rows={3}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Describe the lair of the red dragon..."
+        />
+        <button onClick={sendPrompt}>Send</button>
+  
+        <div className="messages">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`message ${msg.from === "user" ? "user" : "dm"}`}
+            >
+              <strong>{msg.from === "user" ? "You" : "DM"}:</strong>{" "}
+              <span>{msg.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+  
+      <div className="character-panel">
+        <div className="tabs">
+          <button
+            className={activeTab === "view" ? "active" : ""}
+            onClick={() => setActiveTab("view")}
           >
-            <strong>{msg.from === "user" ? "You" : "DM"}:</strong>{" "}
-            <span>{msg.text}</span>
-          </div>
-        ))}
+            View
+          </button>
+          <button
+            className={activeTab === "edit" ? "active" : ""}
+            onClick={() => setActiveTab("edit")}
+          >
+            Edit
+          </button>
+        </div>
+  
+        <div className="tab-content">
+          {activeTab === "view" ? (
+            <CharacterSheetViewer character={character} />
+          ) : (
+            <CharacterSheetEditor character={character} onSave={setCharacter} />
+          )}
+        </div>
       </div>
     </div>
   );
+  
+  
+  
+
+  
 }
 
 export default App;

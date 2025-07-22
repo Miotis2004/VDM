@@ -1,0 +1,53 @@
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+*.log
+*.iml
+*.ipr
+*.iws
+target/
+bin/
+
+# Maven
+log/
+.settings/
+.project
+.classpath
+.idea/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+build/
+
+# React
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# VS Code
+.vscode/
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# IntelliJ
+*.iml
+*.iws
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Others
+*.swp

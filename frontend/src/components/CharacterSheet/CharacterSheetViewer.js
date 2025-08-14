@@ -1,28 +1,31 @@
 import React from "react";
 
-function CharacterSheetViewer({ character }) {
+function CharacterSheetViewer({ character, onEdit, onStartAdventure }) {
   return (
-    <div className="character-sheet">
-      <h3>{character.name}</h3>
+    <div className="character-viewer">
+      <div className="button-group">
+        <button onClick={onEdit} className="btn">Edit</button>
+        <button onClick={() => onStartAdventure(character)} className="btn btn-purple">Start Adventure</button>
+      </div>
+      <h3>{character.name || "Unnamed Hero"}</h3>
       <p><strong>Race:</strong> {character.race}</p>
       <p><strong>Class:</strong> {character.class}</p>
       <p><strong>Level:</strong> {character.level}</p>
-
-      <h4>Stats</h4>
-      <ul>
-        {Object.entries(character.stats).map(([key, value]) => (
-          <li key={key}>{key}: {value}</li>
-        ))}
-      </ul>
-
-      <h4>Equipment</h4>
-      <ul>
-        {character.equipment.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
-
       <p><strong>Background:</strong> {character.background}</p>
+      <p><strong>Stats:</strong></p>
+      <ul>
+        {Object.entries(character.stats).map(([stat, value]) => (
+          <li key={stat}><strong>{stat}</strong>: {value}</li>
+        ))}
+      </ul>
+      <p><strong>Equipment:</strong></p>
+      <ul>
+        {character.equipment.length > 0 ? (
+          character.equipment.map((item, idx) => <li key={idx}>{item}</li>)
+        ) : (
+          <li>None</li>
+        )}
+      </ul>
     </div>
   );
 }
